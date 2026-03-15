@@ -6,7 +6,7 @@ import Highlight from '@/components/Highlight.astro'
 
 const projects = await getCollection('projects')
 
-const md = await getEntry('spec', 'projects')
+const md = (await getEntry('spec', 'projects'))!
 ---
 
 <PageLayout title={md.data.title} description={md.data.description}>

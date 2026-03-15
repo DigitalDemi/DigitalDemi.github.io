@@ -1,5 +1,5 @@
 ---
-import type { CollectionEntry } from 'astro:content'
+import { render, type CollectionEntry } from 'astro:content'
 import type { GetStaticPaths } from 'astro'
 import MarkdownLayout from '@/layouts/MarkdownLayout.astro'
 import { getSortedPosts } from '@/utils/content'
@@ -11,13 +11,12 @@ import PostArchiveInfo from '@/components/post/PostArchiveInfo.astro'
 import { ReadingProgress } from '@/components/post/ReadingProgress'
 import { Outdate } from '@/components/post/Outdate'
 import PostNav from '@/components/post/PostNav.astro'
-import { Comment } from '@/components/Comment'
 
 export const getStaticPaths = (async () => {
   const sortedPosts = await getSortedPosts()
 
   return sortedPosts.map((post, index) => ({
-    params: { slug: post.slug },
+    params: { slug: post.id },
     props: {
       current: post,
       prev: index > 0 ? sortedPosts[index - 1] : undefined,
@@ -34,9 +33,9 @@ interface Props {
 
 const { current, prev, next } = Astro.props
 
-const { headings, Content, remarkPluginFrontmatter } = await current.render()
+const { headings, Content, remarkPluginFrontmatter } = await render(current)
 
-const mdSlug = `/posts/${current.slug}`
+const mdSlug = `/posts/${current.id}`
 
 const mdDescription = concat(current.data.category || '', current.data.tags.join(', '))
 
