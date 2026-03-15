@@ -1,15 +1,15 @@
 ---
 import MarkdownLayout from '@/layouts/MarkdownLayout.astro'
-import { getEntry } from 'astro:content'
+import { getEntry, render } from 'astro:content'
 import Highlight from '@/components/Highlight.astro'
 import SectionBlock from '@/components/SectionBlock.astro'
 import { PostToc } from '@/components/post/PostToc'
 import MarkdownWrapper from '@/components/MarkdownWrapper.astro'
 import { ReadingProgress } from '@/components/post/ReadingProgress'
 
-const md = await getEntry('spec', 'about')
+const md = (await getEntry('spec', 'about'))!
 
-const { headings, Content } = await md.render()
+const { headings, Content } = await render(md)
 ---
 
 <MarkdownLayout
@@ -17,7 +17,7 @@ const { headings, Content } = await md.render()
   description={md.data.description}
   mdTitle={md.data.title}
   mdDescription={md.data.description}
-  mdSlug={md.slug}
+  mdSlug={`/${md.id}`}
 >
   <div
     class="max-w-[1100px] mx-auto px-4 md:px-8 py-16 lg:grid grid-cols-[auto_260px] gap-x-8 items-start"
